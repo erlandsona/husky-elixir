@@ -46,27 +46,12 @@ defmodule Husky.Util do
   ]
   ```
   """
-  define(hooks, [
-    "applypatch-msg",
-    "pre-applypatch",
-    "post-applypatch",
-    "pre-commit",
-    "prepare-commit-msg",
-    "commit-msg",
-    "post-commit",
-    "pre-rebase",
-    "post-checkout",
-    "post-merge",
-    "pre-push",
-    "pre-receive",
-    "update",
-    "post-receive",
-    "post-update",
-    "push-to-checkout",
-    "pre-auto-gc",
-    "post-rewrite",
-    "sendemail-validate"
-  ])
+  define(hooks,
+    Application.get_all_env(:husky)
+    |> Keyword.delete(:host_path)
+    |> Keyword.keys()
+    |> Enum.map(&Atom.to_string/1)
+    |> Enum.map(&String.replace(&1, "_", "-")))
 
   @doc """
   Relative location from husky's install location to the client of husky.
